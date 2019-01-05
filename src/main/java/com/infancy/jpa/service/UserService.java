@@ -27,4 +27,15 @@ public class UserService {
 	public User find(long id) {
 		return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
 	}
+
+	public User update(long id, User user) {
+		userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		user.setId(id);
+		return userRepository.save(user);
+	}
+
+	public void delete(long id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+		userRepository.delete(user);
+	}
 }
