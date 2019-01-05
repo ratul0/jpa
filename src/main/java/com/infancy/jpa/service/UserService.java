@@ -2,6 +2,8 @@ package com.infancy.jpa.service;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,9 @@ public class UserService {
 
 	public User create(User user) {
 		return userRepository.save(user);
+	}
+
+	public User find(long id) {
+		return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
 	}
 }

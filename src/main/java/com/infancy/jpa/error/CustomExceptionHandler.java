@@ -3,6 +3,8 @@ package com.infancy.jpa.error;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
 		return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
+	}
+
+	@ExceptionHandler({ EntityNotFoundException.class })
+	public ResponseEntity<Object> handleAll(EntityNotFoundException ex, WebRequest request) {
+		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), ex.getLocalizedMessage());
+		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 
 	@ExceptionHandler({ Exception.class })
